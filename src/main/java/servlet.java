@@ -12,6 +12,7 @@ import java.sql.*;
 
 @WebServlet(value = "/")
 public class servlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
