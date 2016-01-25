@@ -1,29 +1,16 @@
 package project.DAO;
 
-import project.model.Plant;
+import project.model.ParkObject;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PlantDAO {
+public class PlantDAO extends ParkObjectDAO {
 
-    private Connection connection = null;
-    private ResultSet resultSet = null;
-
-    public Connection getConnection() {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                return connection = DriverManager.getConnection("jdbc:mysql://localhost/park", "user", "password");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return connection;
-    }
-
-    public void insert(Plant plant) {
+    public void insert(ParkObject plant) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO plants (id ,name) VALUES (NULL , ?)");
+            PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO plants (id ,name) VALUES (NULL , ?)");
             preparedStatement.setString(1, plant.getName());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -32,15 +19,15 @@ public class PlantDAO {
         }
     }
 
-    public List<Plant> select() {
-        List<Plant> plants = new LinkedList<Plant>();
+    public List<ParkObject> select() {
+        List<ParkObject> plants = new LinkedList<ParkObject>();
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM plants");
 
-            Plant plant = null;
+            ParkObject plant = null;
             while(resultSet.next()){
-                plant = new Plant();
+                plant = new ParkObject();
                 plant.setId(resultSet.getInt("id"));
                 plant.setName(resultSet.getString("name"));
 
@@ -54,27 +41,5 @@ public class PlantDAO {
         }
         return plants;
     }
-
-//    public ResultSet select() {
-//        try {
-//           Statement statement = connection.createStatement();
-//           resultSet = statement.executeQuery("SELECT * FROM plants");
-//        } catch (SQLException e) {
-//             e.printStackTrace();
-//        }
-//        return resultSet;
-//    }
-
-
-    public void closeConnection(){
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
 
