@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 @WebServlet(
-        value = "/login",
+        value = {"/login"},
         loadOnStartup = 1
 )
 public class LoginServlet extends HttpServlet{
@@ -29,8 +29,8 @@ public class LoginServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        RequestDispatcher requestDispatcher;
         User loginUser = new User();
+        RequestDispatcher requestDispatcher;
         PrintWriter out;
 
         if (req.getParameter("loginNickname").isEmpty() || req.getParameter("loginPassword").isEmpty()) {
@@ -41,35 +41,29 @@ public class LoginServlet extends HttpServlet{
         } else {
             loginUser.setNickname(req.getParameter("loginNickname"));
             loginUser.setPassword(req.getParameter("loginPassword"));
-        }
 
-        System.out.println(loginUser.getNickname() + "!!!!!!" + loginUser.getPassword());
+            UserDAO userDAO = new UserDAO();
+            String id = req.getParameter("name");
+            Statement statement = null;
+            ResultSet resultSet;
 
-        UserDAO userDAO = new UserDAO();
-        String id = req.getParameter("name");
-        Statement st = null;
-        HttpSession session = req.getSession(true);
-        ResultSet rs;
+            try {
+                if (userDAO.searchForUserInDB(loginUser)) {
+                    HttpSession session = req.getSession(true);
+                    session.setAttribute("sessionId", id);
+                    resp.sendRedirect("WEB-INF/jsp/loginSuccess.jsp"); // does not work!!
+                } else {
+                    requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/login.jsp");
+                    out = resp.getWriter();
+                    out.println("<p style='color:red;text-align:center'>Invalid login or password. Try again</p>");
+                    requestDispatcher.include(req, resp);
+                }
 
-        try {
-            st = userDAO.getConnection().createStatement();
-            rs = st.executeQuery("SELECT * FROM users WHERE nickname = '" + loginUser.getNickname() // put in DAO!!
-                    + "' AND password = '" + loginUser.getPassword() + "'");
-            if (rs.next()) {
-                session.setAttribute("id", id);
-                resp.sendRedirect("success.jsp");
-            } else {
-                requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/login.jsp");
-                out = resp.getWriter();
-                out.println("<p style='color:red;text-align:center'>Invalid login or password. Try again</p>");
-                requestDispatcher.include(req, resp);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        //System.out.println(loginUser.getNickname());
     }
 }
 
