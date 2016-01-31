@@ -19,7 +19,7 @@ public class PlantDAO extends ParkObjectDAO {
         }
     }
 
-    public List<ParkObject> select() {
+    public List<ParkObject> getList() {
         List<ParkObject> plants = new LinkedList<ParkObject>();
         try {
             Statement statement = getConnection().createStatement();

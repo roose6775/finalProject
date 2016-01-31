@@ -26,15 +26,14 @@ public class UserDAO extends ParkObjectDAO{
         }
     }
 
-    public boolean searchForNicknameInDB(User user) throws SQLException {
+    public boolean searchForNicknameInDB(User user) throws SQLException{
 
-        boolean result = true; // if database throws exception - user won't be able to register?
-
+         // if database throws exception - user won't be able to register?
         statement = getConnection().createStatement();
-        resultSet = statement.executeQuery("SELECT * FROM users WHERE nickname =" +
-                " '" + user.getNickname() + "'");
-        return (resultSet.next());
 
+            resultSet = statement.executeQuery("SELECT * FROM users WHERE nickname =" +
+                    " '" + user.getNickname() + "'");
+        return (resultSet.next());
     }
 
     public boolean searchForUserInDB(User user) throws SQLException {

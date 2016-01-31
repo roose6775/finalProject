@@ -1,4 +1,4 @@
-package project;
+package project.servlet;
 
 import project.DAO.UserDAO;
 import project.model.User;
@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 @WebServlet(
         value = {"/login"},
@@ -23,6 +21,8 @@ public class LoginServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      //  String loc = "en";
+       // req.setAttribute("lang", loc);
         req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, resp);
     }
 
@@ -43,15 +43,14 @@ public class LoginServlet extends HttpServlet{
             loginUser.setPassword(req.getParameter("loginPassword"));
 
             UserDAO userDAO = new UserDAO();
-            String id = req.getParameter("name");
-            Statement statement = null;
-            ResultSet resultSet;
+            String userName = req.getParameter("loginNickname");
 
             try {
                 if (userDAO.searchForUserInDB(loginUser)) {
                     HttpSession session = req.getSession(true);
-                    session.setAttribute("sessionId", id);
-                    resp.sendRedirect("WEB-INF/jsp/loginSuccess.jsp"); // does not work!!
+                    session.setAttribute("userName", userName);
+                    req.getRequestDispatcher("WEB-INF/jsp/loginSuccess.jsp").forward(req, resp);
+
                 } else {
                     requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/login.jsp");
                     out = resp.getWriter();

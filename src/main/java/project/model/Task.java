@@ -2,18 +2,38 @@ package project.model;
 
 public class Task extends ParkObject {
 
+    private String plant = "";
+    private String work = "";
     private boolean isConfirmed;
     private boolean isCompleted;
     private String taskComment = "";
     private String ownerComment = "";
-    private String foresterComment = "";
+    private String foresterComment = "fffff";
 
+
+
+
+    public String getWorkName() {
+        return work;
+    }
+
+    public void setWorkName(String work) {
+        this.work = work;
+    }
+
+    public String getPlantName() {
+        return plant;
+    }
+
+    public void setPlantName(String plant) {
+        this.plant = plant;
+    }
 
     public boolean getIsConfirmed() {
         return isConfirmed;
     }
 
-    public void setIsConfirmation(boolean isConfirmed) {
+    public void setIsConfirmed(boolean isConfirmed) {
         this.isConfirmed = isConfirmed;
     }
 

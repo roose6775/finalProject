@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 
@@ -9,9 +8,9 @@
 </head>
 <body>
 <div align="center">
-        <table>
+        <table style="text-align:center;">
             <tr>
-                <td><p>Welcome, <c:out value="${sessionScope.sessionId}"/></td>
+                <td><p>Welcome, <c:out value="${sessionScope.userName}"/></td>
             </tr>
              <tr>
                 <td><a href="plants">Start working</a></td>
