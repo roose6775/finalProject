@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
@@ -20,17 +21,17 @@
 <div align="center">
   <table style="text-align:center;">
     <thead>
-    <fmt:message key="login.LoginMessage" var="LoginMessage" />
+    <fmt:message key="login.loginMessage" var="LoginMessage" />
     <th colspan="2">${LoginMessage}</th>
     </thead>
     <tbody>
     <tr>
       <td><label for="loginNickname"><fmt:message key="login.label.loginNickname" />:</label></td>
       <td><input type="text" id="loginNickname" name="loginNickname" /></td>
-      <td/>
+      <td>   </td>
       <td><select id="language" name="language" form="langList" onchange="submit()">
-        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
         <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
+        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
       </select></td>
     </tr>
     <tr>
@@ -42,9 +43,9 @@
       <td colspan="2"><input type="submit" value="${buttonValue}" /></td>
     </tr>
     <tr>
-      <fmt:message key="login.message" var="RegisterMessage" />
-      <fmt:message key="login.messageHere" var="RegisterMessageHere" />
-      <td colspan="2" style="font-size: 13px;"><c:out value = "${RegisterMessage}"/> <a href="registration"><c:out value = "${RegisterMessageHere}"/></a></td>
+      <fmt:message key="login.messageForRegistration" var="messageForRegistration" />
+      <fmt:message key="login.messageForHere" var="messageForHere" />
+      <td colspan="2" style="font-size: 13px;"><c:out value = "${messageForRegistration}"/> <a href="registration"><c:out value = "${messageForHere}"/></a></td>
     </tr>
     </tbody>
   </table>

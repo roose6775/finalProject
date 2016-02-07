@@ -1,17 +1,34 @@
-package project.model;
+package project.dto;
 
 public class Task extends ParkObject {
 
     private String plant = "";
     private String work = "";
-    private boolean isConfirmed;
-    private boolean isCompleted;
+    private int isConfirmed;
+    private int isCompleted;
     private String taskComment = "";
     private String ownerComment = "";
-    private String foresterComment = "fffff";
+    private String foresterComment = "";
+    private int plantId;
+    private int workId;
 
 
 
+    public int getPlantId() {
+        return plantId;
+    }
+
+    public void setPlantId(int plantId) {
+        this.plantId = plantId;
+    }
+
+    public int getWorkId() {
+        return workId;
+    }
+
+    public void setWorkId(int workId) {
+        this.workId = workId;
+    }
 
     public String getWorkName() {
         return work;
@@ -29,19 +46,19 @@ public class Task extends ParkObject {
         this.plant = plant;
     }
 
-    public boolean getIsConfirmed() {
+    public int getIsConfirmed() {
         return isConfirmed;
     }
 
-    public void setIsConfirmed(boolean isConfirmed) {
+    public void setIsConfirmed(int isConfirmed) {
         this.isConfirmed = isConfirmed;
     }
 
-    public boolean getIsCompleted() {
+    public int getIsCompleted() {
         return isCompleted;
     }
 
-    public void setIsCompleted(boolean isCompleted) {
+    public void setIsCompleted(int isCompleted) {
         this.isCompleted = isCompleted;
     }
 

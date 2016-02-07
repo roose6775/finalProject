@@ -2,8 +2,9 @@ package project.servlet;
 
 import project.DAO.PlantDAO;
 import project.DAO.TaskDAO;
-import project.model.ParkObject;
-import project.model.Task;
+import project.DAO.WorkDAO;
+import project.dto.ParkObject;
+import project.dto.Task;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,16 +17,10 @@ import java.util.List;
 @WebServlet(value = "/tasks")
 public class TasksServlet extends HttpServlet {
 
+    //todo 2) add delete task 3) pages 4) active tasks 5) time-deadline
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-//        HttpSession session=req.getSession(false);
-//        String userName = (String) session.getAttribute("userName");
-//        if(userName != null) {
-         // req.getRequestDispatcher("WEB-INF/jsp/tasks.jsp").include(req, resp);
-//        } else {
-//            req.getRequestDispatcher("WEB-INF/jsp/login.jsp").include(req, resp);
-//        }
 
         TaskDAO taskDAO = new TaskDAO();
         taskDAO.getConnection();
@@ -33,13 +28,57 @@ public class TasksServlet extends HttpServlet {
         PlantDAO plantDAO = new PlantDAO();
         List<ParkObject> plantList = plantDAO.getList();
 
+        WorkDAO workDAO = new WorkDAO();
+        List<ParkObject> workList = workDAO.getList();
+
         List<Task> taskList = taskDAO.getList();
 
         req.setAttribute("taskList", taskList);
         req.setAttribute("plantList", plantList);
-        req.getRequestDispatcher("WEB-INF/jsp/task.jsp").forward(req,resp);
+        req.setAttribute("workList", workList);
+        req.getRequestDispatcher("WEB-INF/jsp/tasks.jsp").forward(req, resp);
 
         taskDAO.closeConnection();
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        PlantDAO plantDAO = new PlantDAO();
+        List<ParkObject> plantList = plantDAO.getList();
+
+        WorkDAO workDAO = new WorkDAO();
+        List<ParkObject> workList = workDAO.getList();
+
+        TaskDAO taskDAO = new TaskDAO();
+        Task task = new Task();
+        String stWork = req.getParameter("work");
+        String stPlant = req.getParameter("plant");
+        String comBox = req.getParameter("compBox");
+        String confBox = req.getParameter("confBox");
+
+        if (req.getParameter("plant") != null) {
+            task.setPlantId(plantDAO.searchForIdInDB(stPlant));
+        }
+        if (req.getParameter("work") != null) {
+                task.setWorkId(workDAO.searchForIdInDB(stWork));
+            }
+        if (req.getParameter("addNewTaskButton") != null) {
+            taskDAO.insertIntoDB(task);
+        } else {
+            task.setId(Integer.parseInt(req.getParameter("taskId")));
+            taskDAO.updateDBWithPlant(task);
+            taskDAO.updateDBWithWork(task);
+            if (comBox != null) {
+                task.setIsCompleted(1);
+            }
+            if (confBox != null) {
+                task.setIsConfirmed(1);
+            }
+            taskDAO.updateDBComp(task);
+            taskDAO.updateDBConf(task);
+        }
+        resp.sendRedirect("/tasks");
     }
 }

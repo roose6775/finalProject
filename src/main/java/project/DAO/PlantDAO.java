@@ -1,6 +1,6 @@
 package project.DAO;
 
-import project.model.ParkObject;
+import project.dto.ParkObject;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -8,9 +8,10 @@ import java.util.List;
 
 public class PlantDAO extends ParkObjectDAO {
 
-    public void insert(ParkObject plant) {
+    public void insertIntoDataBase(ParkObject plant) {
         try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO plants (id ,name) VALUES (NULL , ?)");
+            String sql = "INSERT INTO plants (id ,name) VALUES (NULL , ?)";
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
             preparedStatement.setString(1, plant.getName());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -19,13 +20,53 @@ public class PlantDAO extends ParkObjectDAO {
         }
     }
 
+    public void updateDataBase(ParkObject plant) {
+        try {
+            String sql = "UPDATE plants SET name = ? WHERE id =" + plant.getId();
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, plant.getName());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteFromDataBase(ParkObject plant) {
+        try {
+            String sql = "DELETE FROM plants WHERE name = ? ";
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, plant.getName());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int searchForIdInDB(String plantName) {
+        String sql = "SELECT id FROM plants WHERE name = ? ";
+        int id = 0;
+        try {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, plantName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            id = resultSet.getInt("id");
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
     public List<ParkObject> getList() {
-        List<ParkObject> plants = new LinkedList<ParkObject>();
+        List<ParkObject> plants = new LinkedList<>();
         try {
             Statement statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM plants");
+            ResultSet resultSet = statement.executeQuery("SELECT id,name FROM plants ORDER BY id");
 
-            ParkObject plant = null;
+            ParkObject plant;
             while(resultSet.next()){
                 plant = new ParkObject();
                 plant.setId(resultSet.getInt("id"));

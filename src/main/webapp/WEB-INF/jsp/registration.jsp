@@ -20,15 +20,15 @@
       </tr>
       <tr>
         <td>Nickname*</td>
-        <td><input type="text" name="regNickname" value="" /></td>
+        <td><input type="text" name="regNickname" value="" required/></td>
       </tr>
       <tr>
         <td>Password*</td>
-        <td><input type="password" name="regPassword" value="" /></td>
+        <td><input type="password" name="regPassword" value="" required/></td>
       </tr>
       <tr>
         <td>Repeat password*</td>
-        <td><input type="password" name="regPasswordAgain" value="" /></td>
+        <td><input type="password" name="regPasswordAgain" value="" required/></td>
       </tr>
       <tr>
         <td colspan="2">* - required fields</td>

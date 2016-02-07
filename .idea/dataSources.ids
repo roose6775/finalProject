@@ -11,17 +11,21 @@
       <column name="name" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="tasks_ibfk_4" table="tasks" schema="" catalog="park" columns="plantId"/>
+      <index name="unique_name" unique="true" columns="name"/>
     </table>
     <table name="tasks" schema="" catalog="park" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="plantId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="workId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="completed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
-      <column name="confirmed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="completed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <column name="confirmed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
       <column name="foresterComment" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="ownerComment" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="taskComment" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="tasks_ibfk_3" columns="workId" ref-table="works" ref-schema="" ref-catalog="park" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <foreign-key name="tasks_ibfk_4" columns="plantId" ref-table="plants" ref-schema="" ref-catalog="park" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
     </table>
     <table name="treatments" schema="" catalog="park" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -30,9 +34,10 @@
     </table>
     <table name="users" schema="" catalog="park" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="name" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="25" scale="0" nullable="true" jdbcType="12"/>
       <column name="nickname" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
       <column name="password" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="role" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12" def="J2ZvcmVzdGVyJw=="/>
       <primary-key name="PRIMARY" columns="id"/>
       <index name="unique_nickname" unique="true" columns="nickname"/>
     </table>
@@ -40,6 +45,7 @@
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="tasks_ibfk_3" table="tasks" schema="" catalog="park" columns="workId"/>
     </table>
   </data-source>
 </component>

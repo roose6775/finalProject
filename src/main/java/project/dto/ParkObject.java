@@ -1,4 +1,4 @@
-package project.model;
+package project.dto;
 
 public class ParkObject {
     private int id;

@@ -1,7 +1,7 @@
 package project.servlet;
 
 import project.DAO.UserDAO;
-import project.model.User;
+import project.dto.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
