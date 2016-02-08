@@ -1,4 +1,4 @@
-package project;
+package project.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -7,13 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/plants", "/start","/works"})
+@WebFilter(urlPatterns = {"/plants", "/start","/works","/treatments","/users","/tasks"})
 public class LoginFilter implements Filter {
 
     @Override
     public void init(FilterConfig config) throws ServletException {
-        // If you have any <init-param> in web.xml, then you could get them
-        // here by config.getInitParameter("name") and assign it as field.
     }
 
     @Override
@@ -31,8 +29,5 @@ public class LoginFilter implements Filter {
 
     @Override
     public void destroy() {
-        // If you have assigned any expensive resources as field of
-        // this Filter class, then you could clean/close them here.
     }
-
 }

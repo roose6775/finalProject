@@ -1,7 +1,11 @@
 package project.dto;
 
+import java.util.Date;
+
 public class Task extends ParkObject {
 
+    private Date date;
+    private String treat = "";
     private String plant = "";
     private String work = "";
     private int isConfirmed;
@@ -11,8 +15,32 @@ public class Task extends ParkObject {
     private String foresterComment = "";
     private int plantId;
     private int workId;
+    private int treatId;
 
 
+    public String getTreatName() {
+        return treat;
+    }
+
+    public void setTreatName(String treat) {
+        this.treat = treat;
+    }
+
+    public Date getTaskDate() {
+        return date;
+    }
+
+    public void setTaskDate(Date date) {
+        this.date = date;
+    }
+
+    public int getTreatId() {
+        return treatId;
+    }
+
+    public void setTreatId(int treatId) {
+        this.treatId = treatId;
+    }
 
     public int getPlantId() {
         return plantId;

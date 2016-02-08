@@ -1,32 +1,20 @@
 package project.DAO;
 
+import project.CP.Pool;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 
 public class ParkObjectDAO {
 
-    private Connection connection = null;
-    private ResultSet resultSet = null;
+    private Connection connection;
 
     public Connection getConnection() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            return connection = DriverManager.getConnection("jdbc:mysql://localhost/park", "user", "password");
+        try( Connection connection = Pool.getInstance().getConnection()){
+            this.connection = connection;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return connection;
-    }
-
-    public void closeConnection(){
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

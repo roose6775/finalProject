@@ -8,10 +8,10 @@ import java.util.List;
 
 public class PlantDAO extends ParkObjectDAO {
 
+
     public void insertIntoDataBase(ParkObject plant) {
-        try {
-            String sql = "INSERT INTO plants (id ,name) VALUES (NULL , ?)";
-            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        String sql = "INSERT INTO plants (id ,name) VALUES (NULL , ?)";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
             preparedStatement.setString(1, plant.getName());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -21,9 +21,9 @@ public class PlantDAO extends ParkObjectDAO {
     }
 
     public void updateDataBase(ParkObject plant) {
-        try {
-            String sql = "UPDATE plants SET name = ? WHERE id =" + plant.getId();
-            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        String sql = "UPDATE plants SET name = ? WHERE id =" + plant.getId();
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+
             preparedStatement.setString(1, plant.getName());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -33,9 +33,8 @@ public class PlantDAO extends ParkObjectDAO {
     }
 
     public void deleteFromDataBase(ParkObject plant) {
-        try {
-            String sql = "DELETE FROM plants WHERE name = ? ";
-            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        String sql = "DELETE FROM plants WHERE name = ? ";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
             preparedStatement.setString(1, plant.getName());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -46,14 +45,15 @@ public class PlantDAO extends ParkObjectDAO {
 
     public int searchForIdInDB(String plantName) {
         String sql = "SELECT id FROM plants WHERE name = ? ";
-        int id = 0;
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+        int id = -1;
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+
             preparedStatement.setString(1, plantName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            id = resultSet.getInt("id");
-            preparedStatement.close();
+            if (resultSet.next()) {
+                id = resultSet.getInt("id");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,9 +61,9 @@ public class PlantDAO extends ParkObjectDAO {
     }
 
     public List<ParkObject> getList() {
-        List<ParkObject> plants = new LinkedList<>();
-        try {
-            Statement statement = getConnection().createStatement();
+        List<ParkObject> plants = new LinkedList<ParkObject>();
+        try (Statement statement = getConnection().createStatement();) {
+
             ResultSet resultSet = statement.executeQuery("SELECT id,name FROM plants ORDER BY id");
 
             ParkObject plant;
@@ -82,5 +82,6 @@ public class PlantDAO extends ParkObjectDAO {
         }
         return plants;
     }
+
 }
 

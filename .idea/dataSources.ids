@@ -23,14 +23,18 @@
       <column name="foresterComment" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="ownerComment" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="taskComment" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="treatmentId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="tasks_ibfk_3" columns="workId" ref-table="works" ref-schema="" ref-catalog="park" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
       <foreign-key name="tasks_ibfk_4" columns="plantId" ref-table="plants" ref-schema="" ref-catalog="park" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <foreign-key name="tasks_ibfk_5" columns="treatmentId" ref-table="treatments" ref-schema="" ref-catalog="park" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
     </table>
     <table name="treatments" schema="" catalog="park" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="tasks_ibfk_5" table="tasks" schema="" catalog="park" columns="treatmentId"/>
     </table>
     <table name="users" schema="" catalog="park" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

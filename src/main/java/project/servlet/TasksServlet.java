@@ -17,8 +17,6 @@ import java.util.List;
 @WebServlet(value = "/tasks")
 public class TasksServlet extends HttpServlet {
 
-    //todo 2) add delete task 3) pages 4) active tasks 5) time-deadline
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -38,19 +36,13 @@ public class TasksServlet extends HttpServlet {
         req.setAttribute("workList", workList);
         req.getRequestDispatcher("WEB-INF/jsp/tasks.jsp").forward(req, resp);
 
-        taskDAO.closeConnection();
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PlantDAO plantDAO = new PlantDAO();
-        List<ParkObject> plantList = plantDAO.getList();
-
         WorkDAO workDAO = new WorkDAO();
-        List<ParkObject> workList = workDAO.getList();
-
         TaskDAO taskDAO = new TaskDAO();
         Task task = new Task();
         String stWork = req.getParameter("work");

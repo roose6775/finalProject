@@ -21,25 +21,31 @@ public class WorkServlet extends HttpServlet {
 
         req.setAttribute("works", workListJSP);
         req.getRequestDispatcher("WEB-INF/jsp/works.jsp").forward(req, resp);
-        workDAO.closeConnection();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         WorkDAO workDAO = new WorkDAO();
         ParkObject work = new ParkObject();
         work.setName(req.getParameter("workName"));
 
-        if (!(work.getName().isEmpty())) {
-            if (req.getParameter("deleteButton")!=null){
-                workDAO.deleteFromDataBase(work);
-            } else if (req.getParameter("id") != null) {
+        if (req.getParameter("deleteButton") != null) {
+            workDAO.deleteFromDataBase(work);
+        } else {
+            if (req.getParameter("id") != null) {
                 work.setId(Integer.parseInt(req.getParameter("id")));
                 workDAO.updateDataBase(work);
             } else {
-                workDAO.insertIntoDataBase(work);
+                if (workDAO.searchForIdInDB(work.getName()) > 0) {
+                    req.setAttribute("AlreadyExistsError", "true");
+                    req.getRequestDispatcher("WEB-INF/jsp/works.jsp").forward(req, resp);
+                } else {
+                    workDAO.insertIntoDataBase(work);
+                }
             }
-            resp.sendRedirect("/works");
         }
+        resp.sendRedirect("/works");
     }
+
 }

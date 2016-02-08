@@ -10,21 +10,20 @@
 <fmt:message key="backToStart" var="backToStart"/>
 <fmt:message key="youSignedAs" var="youSignedAs"/>
 <fmt:message key="logout" var="logout"/>
-<fmt:message key="works.addNewItemButton" var="addNewItemButton" />
-<fmt:message key="works.addNewItemPlaceholder" var="addNewItemPlaceholder" />
+<fmt:message key="itemAlreadyExistsError" var="itemAlreadyExistsError" />
+<fmt:message key="treatments.nameOfList" var="nameOfList" />
+<fmt:message key="parkObj.id" var="id" />
+<fmt:message key="parkObj.name" var="name" />
 <fmt:message key="parkObj.saveChangesButton" var="saveChangesButton" />
 <fmt:message key="parkObj.deleteItemButton" var="deleteItemButton" />
 <fmt:message key="parkObj.cancelButton" var="cancelButton" />
-<fmt:message key="works.nameOfList" var="nameOfList" />
-<fmt:message key="parkObj.id" var="id" />
-<fmt:message key="parkObj.name" var="name" />
-
+<fmt:message key="treatments.addNewItemButton" var="addNewItemButton" />
+<fmt:message key="treatments.addNewItemPlaceholder" var="addNewItemPlaceholder" />
 
 <html lang="${language}">
 <head>
-    <title>Works</title>
+  <title>Plants</title>
 </head>
-
 <script>
 
   function showButton(btnName,btnName2,btnName3,btnId){
@@ -46,12 +45,11 @@
       document.getElementById(btnName3 + btnId).style.display = 'none';
     }
     if (name != null) {
-      document.getElementById("plantName" + btnId).value = name;
+      document.getElementById("treatmentName" + btnId).value = name;
     }
   }
 
 </script>
-
 <body>
 
 <form id="langList">
@@ -60,7 +58,6 @@
 </form>
 
 <div align="center">
-
   <table>
     <tr>
       <td>
@@ -81,9 +78,7 @@
   </c:if>
 
   <table>
-
     <caption><h3>${nameOfList}</h3></caption>
-
     <thead>
     <tr>
       <th>${id}</th>
@@ -91,49 +86,61 @@
     </tr>
     </thead>
     <tbody>
+
     <c:choose>
       <c:when test = "${(sessionScope.userRole).equals('owner')}">
 
-        <c:forEach var="work" items="${works}">
+        <c:forEach var="treatment" items="${treatments}">
+          <c:choose>
+          <c:when test="${treatment.id==1}"/>
+          <c:otherwise>
           <tr>
-            <form id="${work.id}" method="post" action="works">
-              <td><input type="hidden" name="id" value="${work.id}" /><c:out value="${work.id}"/></td>
-              <td><input type="text" id="workName${work.id}" name="workName" value="${work.name}"
-                         onfocus="showButton('saveBtn','canBtn','delItemBtn',${work.id})" required/></td>
-              <td><input hidden type="submit" name="saveChanges" id="saveBtn${work.id}" form="${work.id}"
+            <form id="${treatment.id}" method="post" action="${pageContext.request.contextPath}/treatments">
+              <td><input type="hidden" name="id" value="${treatment.id}" />${treatment.id}</td>
+              <td><input type="text" id="treatmentName${treatment.id}" name="treatmentName" value="${treatment.name}"
+                         onfocus="showButton('saveBtn','canBtn','delItemBtn',${treatment.id})" required/></td>
+              <td><input hidden type="submit" name="saveChanges" id="saveBtn${treatment.id}" form="${treatment.id}"
                          value="${saveChangesButton}" /></td>
-              <td><input hidden type="submit" name="deleteButton" id="delItemBtn${work.id}" form="${work.id}"
+              <td><input hidden type="submit" name="deleteButton" id="delItemBtn${treatment.id}" form="${treatment.id}"
                          value="${deleteItemButton}" /></td>
-              <td><input hidden type="button" id="canBtn${work.id}" form="${work.id}"
-                         onclick="hideButton('saveBtn','canBtn','delItemBtn',${work.id},'${work.name}')"
+              <td><input hidden type="button" id="canBtn${treatment.id}" form="${treatment.id}"
+                         onclick="hideButton('saveBtn','canBtn','delItemBtn',${treatment.id},'${treatment.name}')"
                          value="${cancelButton}" /></td>
             </form>
-
           </tr>
+          </c:otherwise>
+          </c:choose>
         </c:forEach>
 
         <tr>
-          <form id="addWork" method="post" action="works">
+          <form id="addPlant" method="post" action="${pageContext.request.contextPath}/treatments">
             <td>   </td>
-            <td><input type="text" id="newWork" name="workName" placeholder="${addNewItemPlaceholder}"
+            <td><input type="text" id="newPlant" name="treatmentName" placeholder="${addNewItemPlaceholder}"
                        required="required" onfocus="showButton('cancelButton',null,null,'')" /></td>
-            <td><input type="submit" id="addNewButton" form="addWork" value="${addNewItemButton}" /></td>
-            <td><input hidden type="reset" id="cancelButton" form="addWork" value="${cancelButton}"
+            <td><input type="submit" id="addNewButton" form="addPlant" value="${addNewItemButton}" /></td>
+            <td><input hidden type="reset" id="cancelButton" form="addPlant" value="${cancelButton}"
                        onclick="hideButton('cancelButton',null,null,'',null)"/></td>
           </form>
         </tr>
       </c:when>
       <c:otherwise>
-        <c:forEach var="work" items="${works}">
+        <c:forEach var="treatment" items="${treatments}">
+          <c:choose>
+          <c:when test="${treatment.id==1}"/>
+          <c:otherwise>
           <tr>
-            <td>${work.id}</td>
-            <td><input type="text" value="${work.name}" disabled></td>
+            <td>${treatment.id}</td>
+            <td><input type="text" value="${treatment.name}" disabled></td>
           </tr>
+          </c:otherwise>
+          </c:choose>
         </c:forEach>
       </c:otherwise>
     </c:choose>
+
     </tbody>
   </table>
-  </div>
+
+</div>
 </body>
 </html>

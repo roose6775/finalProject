@@ -64,7 +64,7 @@ public class WorkDAO extends ParkObjectDAO {
     }
 
     public List<ParkObject> getList() {
-        List<ParkObject> works = new LinkedList<>();
+        List<ParkObject> works = new LinkedList<ParkObject>();
         try {
             Statement statement = getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id,name FROM works ORDER BY id");
